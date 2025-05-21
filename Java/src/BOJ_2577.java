@@ -13,6 +13,7 @@ public class BOJ_2577 {
         int A = Integer.parseInt(br.readLine());
         int B = Integer.parseInt(br.readLine());
         int C = Integer.parseInt(br.readLine());
+        br.close();
 
         // A * B * C의 결과값을 계산한다.
         int mult = A * B * C;
