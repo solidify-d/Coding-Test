@@ -1,3 +1,5 @@
+package Class_One;
+
 import java.util.Scanner;
 
 public class BOJ_1463{

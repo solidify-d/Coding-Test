@@ -1,3 +1,5 @@
+package Class_One;
+
 import java.io.IOException;
 
 public class BOJ_10171 { // 고양이
