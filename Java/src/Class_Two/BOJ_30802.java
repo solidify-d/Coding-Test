@@ -1,4 +1,4 @@
-package Class_One;
+package Class_Two;
 
 import java.io.BufferedReader;
 import java.io.IOException;
