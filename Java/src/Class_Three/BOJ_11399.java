@@ -38,7 +38,7 @@ public class BOJ_11399 {
             // 현재 사람의 대기 시간 추가 (이전 사람들의 시간 누적)
             timeTaken += pq.poll();
 
-            // 전체 대기 시간에 현재 누적 시간을 더함
+            // 전체 대기 시간에 현재 누적 시간을 더함 (i번째 사람의 대기 시간을 누적)
             totalTimeTaken += timeTaken;
         }
 
