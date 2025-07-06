@@ -1,74 +1,71 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+class UndirectedGraph {
+    private int count;
+    private int[][] vertexMatrix;
 
-    // Node 클래스 : 각 문서의 중요도와 추적 대상 여부를 함께 저장
-    static class Node {
-        int priority;   //문서의 중요도
-        boolean isTracked;  // 추적대상 문서인지 여부
-
-        public Node(int priority, boolean isTracked) {
-            this.priority = priority;
-            this.isTracked = isTracked;
-        }
+    public UndirectedGraph(int count){
+        this.count = count;
+        vertexMatrix = new int[count][count];
     }
 
-    public static void main(String[] args) throws IOException{
-        // 입력을 빠르게 받기 위한 BufferedReader 사용
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public void addEdges(int from, int to, int weight){
+        vertexMatrix[from][to] = weight;
+        vertexMatrix[to][from] = weight;
+    }
 
-        int testCount = Integer.parseInt(br.readLine());  //테스트케이스 개수
+    public int[][] getMatrix() {
+        return vertexMatrix;
+    }
+}
 
-        for (int i = 0; i < testCount; i++) { //테스트케이스만큼 for이 도는거지?
-            // 한 줄 입력을 공백 기준으로 분할하고, 각 문자열을 정수로 변환하여 int배열로 저장
-            String[] inputs = br.readLine().split(" ");
-            int N = Integer.parseInt(inputs[0]); // N은 문서 중요도의 개수
-            int M = Integer.parseInt(inputs[1]); // M은 내가 출력해야 할 중요도의 초기 index
+class DfsSearch{
+    int count;
+    boolean[] visited;
+    Stack<Integer> stack;
+    int[][] matrix;
 
-            String[] priorities = br.readLine().split(" ");
-            int[] pr = new int[priorities.length];
-            int index = 0;
-            for (String p : priorities) {
-                pr[index] = Integer.parseInt(p);
-                index++;
-            }
+    public DfsSearch(int count){
+        this.count = count;
+        visited = new boolean[count];
+        stack = new Stack<Integer>();
+    }
 
-            LinkedList<Node> desk = new LinkedList<>();
+    public void dfsTraversal(){
+        stack.push(0);
+        visited[0] = true;
 
-            for (int j = 0; j < N; j++) {
-                boolean isTracked = (j == M); //현재 문서가 추적 대상인지 여부 결정
-                desk.add(new Node(pr[i], isTracked)); // Node 타입 Linkedlist의 desk에 node를 저장한다.
-            }
+        while(!stack.isEmpty()){
+            int node = stack.pop();
+            System.out.println(node + " ");
 
-            int count = 0; // 몇 번째에 출력할 건지 count 변수
-
-            if (desk.size() == 1) {
-                count++;
-                System.out.println(count);
-                continue;
-            }
-
-            while (!desk.isEmpty()) {
-                Node curr = desk.poll(); // 맨 앞의 문서 curr 저장
-                boolean high = false;
-                for (Node temp : desk) {
-                    if (temp.priority > curr.priority) {
-                        high = true;
-                        break;
-                    }
+            for (int i = 0; i < count; i++) {
+                if(matrix[node][i] != 0 && !visited[i]) {
+                    stack.push(i);
+                    visited[i] = true;
                 }
-                if (!high) {
-                    count++;
-                    if (curr.isTracked) {
-                        System.out.println(count);
-                        break;
-                    }
-                } else {
-                    desk.addLast(curr);
-                }
-
             }
         }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) throws IOException{
+        int count = 7;
+        UndirectedGraph graph = new UndirectedGraph(count);
+        DfsSearch dfsSearch = new DfsSearch(count);
+
+        graph.addEdges(0, 1, 1);
+        graph.addEdges(0, 2, 1);
+        graph.addEdges(1, 3, 1);
+        graph.addEdges(1, 4, 1);
+        graph.addEdges(2, 5, 1);
+        graph.addEdges(2, 6, 1);
+        graph.addEdges(4, 5, 1);
+        graph.addEdges(3, 7, 1);
+
+        dfsSearch.matrix = graph.getMatrix();
+        dfsSearch.dfsTraversal();
     }
 }
